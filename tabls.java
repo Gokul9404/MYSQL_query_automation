@@ -1,9 +1,9 @@
 package MySQL_DBMS;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,8 +12,11 @@ public class tabls {
     Statement stmnt;
     ResultSet results;
     Scanner tb_sc = new Scanner(System.in);
+    extras ets = new extras();
     ArrayList<String> tbl_list = new ArrayList<>();
-
+    ArrayList<String> tbl_property_nameList = new ArrayList<>();
+    ArrayList<String> tbl_property_typeList = new ArrayList<>();
+    
     public tabls(Connection con, Statement stmnt) {
         this.con = con;
         this.stmnt = stmnt;
@@ -35,7 +38,7 @@ public class tabls {
                 tbl_list.add(db);
             }
         } catch (SQLException e) {
-            // e.printStackTrace();
+            e.printStackTrace();
             System.out.println(" Update table list func. Error ");
         }
     }
@@ -48,6 +51,7 @@ public class tabls {
             System.out.println(i + ") " + db);
             i++;
         }
+        System.out.println("Total no. of Databases available are ::" + i);
         if (a == 1) {
             try {
                 System.out.print("Enter your choice [0-" + i + "] :- ");
@@ -72,12 +76,13 @@ public class tabls {
 
     public boolean show_table(String dbs) {
         try {
-            String sql = String.format("USE %s", dbs);
-            stmnt.executeUpdate(sql);
+            String sql = String.format("SELECT * FROM %s", dbs);
+            results = stmnt.executeQuery(sql);
+            ets.Show_Results(results);
             return true;
         } catch (Exception e) {
             // System.out.println(e);
-            System.out.println("Unable to Connect:: Databases does not exist!");
+            System.out.println("Unable to Retrieve:: Table does not exist!");
             return false;
         }
     }
@@ -87,37 +92,13 @@ public class tabls {
         try {
             String sql = String.format("SELECT * FROM %s", tbl_list.get(n));
             results = stmnt.executeQuery(sql);
-            while (results.next()) {
-                for (int i = 0; i < 100; i++) {
-                    String res = results.getString(i);
-                    if(res == null){
-                        break;
-                    }
-                    System.out.print(res + " ");
-                }
-                System.out.print("\n");
-            }
+            ets.Show_Results(results);
             return true;
         } catch (Exception e) {
             // System.out.println(e);
-            System.out.println(" Connect Database Func Error ");
+            System.out.println(" Show Table Func Error ");
         }
         return false;
-    }
-
-    public boolean create_database(String dbs) {
-        System.out.print("Enter name of the database to create:- ");
-        String dtbs = tb_sc.nextLine();
-        try {
-            String sql = String.format("CREATE DATABASE %s", dtbs);
-            stmnt.executeUpdate(sql);
-            update_tbl_list();
-            return true;
-        } catch (Exception e) {
-            // System.out.println(e);
-            System.out.println(" Create Database Func Error ");
-            return false;
-        }
     }
 
     public boolean delete_table(String tbbl) {

@@ -31,6 +31,7 @@ public class databs {
          System.out.println(i + ") " + db);
          i++;
       }
+      System.out.println("Total no. of Databases available are ::" + (i-1));
       if (a == 1) {
          try{            
             System.out.print("Enter your choice [0-" + i + "] :- ");
@@ -93,7 +94,7 @@ public class databs {
       return false;
    }
 
-   public boolean create_database(String dbs) {
+   public boolean create_database() {
       System.out.print("Enter name of the database to create:- ");
       String dtbs = sc.nextLine();
       try {
