@@ -31,7 +31,7 @@ public class databs {
          System.out.println(i + ") " + db);
          i++;
       }
-      System.out.println("Total no. of Databases available are ::" + (i-1));
+      System.out.println("Total no. of Databases available are ::" + i);
       if (a == 1) {
          try{            
             System.out.print("Enter your choice [0-" + i + "] :- ");

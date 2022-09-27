@@ -51,7 +51,7 @@ public class tabls {
             System.out.println(i + ") " + db);
             i++;
         }
-        System.out.println("Total no. of Databases available are ::" + i);
+        System.out.println("Total no. of Tables available in the database are ::" + i);
         if (a == 1) {
             try {
                 System.out.print("Enter your choice [0-" + i + "] :- ");
@@ -74,9 +74,9 @@ public class tabls {
         Choose_tbl(0);
     }
 
-    public boolean show_table(String dbs) {
+    public boolean show_table(String tbl) {
         try {
-            String sql = String.format("SELECT * FROM %s", dbs);
+            String sql = String.format("SELECT * FROM %s", tbl);
             results = stmnt.executeQuery(sql);
             ets.Show_Results(results);
             return true;
@@ -90,13 +90,39 @@ public class tabls {
     public boolean choose_show_table() {
         int n = Choose_tbl(1);
         try {
-            String sql = String.format("SELECT * FROM %s", tbl_list.get(n));
-            results = stmnt.executeQuery(sql);
-            ets.Show_Results(results);
-            return true;
+            String tbbl = tbl_list.get(n);
+            return show_table(tbbl);
         } catch (Exception e) {
             // System.out.println(e);
             System.out.println(" Show Table Func Error ");
+        }
+        return false;
+    }
+    
+    public boolean describe_table(String tbl){
+        try {
+            String sql = String.format("DESCRIBE %s",tbl);
+            results = stmnt.executeQuery(sql);
+            // ets.Show_Results(results);
+            tbl_property_nameList.clear();
+            tbl_property_typeList.clear();
+            tbl_property_nameList = ets.Get_Results(results, 1, 2);
+            tbl_property_typeList = ets.Get_Results(results, 2, 3);
+            return true;
+        } catch (Exception e) {
+            // System.out.println(e);
+            System.out.println(" Describe Table Func Error ");
+        }
+        return false;
+    }
+    public boolean choose_describe_table(){
+        int n = Choose_tbl(1);
+        try {
+            String tbl =  tbl_list.get(n);
+            return describe_table(tbl);
+        } catch (Exception e) {
+            // System.out.println(e);
+            System.out.println(" Choose Descirbe Table Func Error ");
         }
         return false;
     }
@@ -124,17 +150,12 @@ public class tabls {
             System.out.print("Delete above table [yes: 1/ no:0]:-");
             int cnf = tb_sc.nextInt();
             if(cnf != 0){
-            String sql = String.format("DROP TABLE %s", tbbl);
-            System.out.println(sql);
-            stmnt.executeUpdate(sql);
-            System.out.println("Table[" + tbbl + "] Deleted!!");
-            update_tbl_list();
-            return true;
+                return delete_table(tbbl);
             }
             else{
                 return false;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(e);
             System.out.println("Table does not exist!!!");
         }
