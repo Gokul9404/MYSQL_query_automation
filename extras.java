@@ -2,38 +2,14 @@ package MySQL_DBMS;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-// import java.sql.Statement;
 import java.sql.ResultSet;
-
-class search_array {
-    public int search_intary(int item, int ary[]) {
-        int index = -1;
-        for (int i = 0; i < ary.length; i++) {
-            if (ary[i] == item) {
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
-
-    public int search_strary(String item, String ary[]) {
-        int index = -1;
-        for (int i = 0; i < ary.length; i++) {
-            if (ary[i] == item) {
-                index = i;
-                break;
-            }
-        }
-        return index;
-    }
-}
 
 public class extras {
     public void Show_Results(ResultSet res) {
+        int res_count =0;
         try {
             while (res.next()) {
-                for (int i = 1; i < 100; i++) {
+                for (int i = 1; i != 0; i++) {
                     try {
                         String reslt = res.getString(i);
                         System.out.print(reslt + " | ");
@@ -41,7 +17,11 @@ public class extras {
                         break;
                     }
                 }
+                res_count++;
                 System.out.print("\n");
+            }
+            if(res_count==0){
+                System.out.println("NO RESULT GENERATED!!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
