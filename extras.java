@@ -30,14 +30,14 @@ public class extras {
     }
 
     public void Show_Mutiple_Single_Results(ArrayList res1, ArrayList res2) {
-        int Ar1, Ar2, Ls_ary_size; 
+        int Ar1, Ar2, Ls_ary_size;
         Ar1 = res1.size();
         Ar2 = res2.size();
         Ls_ary_size = Ar1 < Ar2 ? Ar1 : Ar2;
         try {
             for (int i = 1; i <= Ls_ary_size; i++) {
                 try {
-                    System.out.println(String.format("%25s | %s",res1.get(i),res2.get(i)));
+                    System.out.println(String.format("%25s | %s", res1.get(i), res2.get(i)));
                 } catch (Exception e) {
                     break;
                 }
@@ -55,7 +55,7 @@ public class extras {
                 for (int i = 1; i < end_column; i++) {
                     try {
                         String reslt = res.getString(i);
-                        if(i >= start_column){
+                        if (i >= start_column) {
                             results.add(reslt);
                         }
                     } catch (SQLException e) {
