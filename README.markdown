@@ -1,4 +1,5 @@
 <img align="left" height="64" width="64" src="https://cdn-icons-png.flaticon.com/512/14/14427.png" />
+
 # MYSQL Query Automation using Java
 
 A package made by using **Java**'s **JDBC API**, to make the basic Queries of MYSQL run within a Java program.
