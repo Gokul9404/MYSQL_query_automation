@@ -10,13 +10,13 @@ import java.util.Scanner;
 public class DDL_Table {
     Connection con;
     Statement stmnt;
-    ResultSet results;
+    ResultSet results, res;
     Scanner tb_sc = new Scanner(System.in);
     extras ets = new extras();
     ArrayList<String> tbl_list = new ArrayList<>();
     ArrayList<String> tbl_property_nameList = new ArrayList<>();
     ArrayList<String> tbl_property_typeList = new ArrayList<>();
-    
+
     public DDL_Table(Connection con, Statement stmnt) {
         this.con = con;
         this.stmnt = stmnt;
@@ -27,7 +27,7 @@ public class DDL_Table {
         this.con = con;
         this.stmnt = stmnt;
     };
-    
+
     protected void update_tbl_list() {
         String qury = "SHOW TABLES";
         try {
@@ -42,7 +42,7 @@ public class DDL_Table {
             System.out.println(" Update table list func. Error ");
         }
     }
-    
+
     protected int Choose_tbl(int a) {
         int i = 0;
         int n = -1;
@@ -132,7 +132,7 @@ public class DDL_Table {
         try {
             describe_table(tbl);
             String clmn_name = tbl_property_nameList.get(Choose_column(1));
-            String sql = String.format("SELECT %s FROM %s",clmn_name, tbl);
+            String sql = String.format("SELECT %s FROM %s", clmn_name, tbl);
             results = stmnt.executeQuery(sql);
             ets.Show_Results(results);
             return true;
@@ -154,7 +154,7 @@ public class DDL_Table {
         }
         return false;
     }
-    
+
     public boolean show_specific_row(String tbl) {
         try {
             describe_table(tbl);
@@ -186,15 +186,15 @@ public class DDL_Table {
         }
         return false;
     }
-    
-    public boolean describe_table(String tbl){
+
+    public boolean describe_table(String tbl) {
         try {
-            String sql = String.format("DESCRIBE %s",tbl);
-            results = stmnt.executeQuery(sql);
-            // ets.Show_Results(results);
+            String sql = String.format("DESCRIBE %s", tbl);
             tbl_property_nameList.clear();
             tbl_property_typeList.clear();
+            results = stmnt.executeQuery(sql);
             tbl_property_nameList = ets.Get_Results(results, 1, 2);
+            results =  stmnt.executeQuery(sql);
             tbl_property_typeList = ets.Get_Results(results, 2, 3);
             return true;
         } catch (SQLException e) {
@@ -203,12 +203,16 @@ public class DDL_Table {
         }
         return false;
     }
-    
-    public boolean choose_describe_table(){
+
+    public boolean choose_describe_table() {
         int n = Choose_tbl(1);
         try {
-            String tbl =  tbl_list.get(n);
-            return describe_table(tbl);
+            String tbl = tbl_list.get(n);
+            boolean z = describe_table(tbl);
+            if(z){
+                ets.Show_Mutiple_Single_Results(tbl_property_nameList, tbl_property_typeList);
+                return true;
+            }
         } catch (Exception e) {
             // System.out.println(e);
             System.out.println(" Choose Descirbe Table Func Error ");
