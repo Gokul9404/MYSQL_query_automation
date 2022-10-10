@@ -7,13 +7,13 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class databs {
+public class DDML_Database {
    Connection con;
    Statement stmnt;
    Scanner sc = new Scanner(System.in);
    ArrayList<String> db_list = new ArrayList<>();
 
-   public databs(Connection con, Statement stmnt) {
+   public DDML_Database(Connection con, Statement stmnt) {
       this.con = con;
       this.stmnt = stmnt;
       update_db_list();

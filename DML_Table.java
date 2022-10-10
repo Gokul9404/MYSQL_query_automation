@@ -5,11 +5,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class table_dml extends table_ddl{
+public class DML_Table extends DDL_Table{
     Scanner tb_sc = new Scanner(System.in);
     extras ets = new extras();
     
-    public table_dml(Connection con, Statement stmnt) {
+    public DML_Table(Connection con, Statement stmnt) {
         super(con,stmnt);
     };
 

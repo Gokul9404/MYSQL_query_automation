@@ -7,7 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class table_ddl {
+public class DDL_Table {
     Connection con;
     Statement stmnt;
     ResultSet results;
@@ -17,7 +17,7 @@ public class table_ddl {
     ArrayList<String> tbl_property_nameList = new ArrayList<>();
     ArrayList<String> tbl_property_typeList = new ArrayList<>();
     
-    public table_ddl(Connection con, Statement stmnt) {
+    public DDL_Table(Connection con, Statement stmnt) {
         this.con = con;
         this.stmnt = stmnt;
         update_tbl_list();
