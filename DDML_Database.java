@@ -18,51 +18,50 @@ public class DDML_Database {
       this.stmnt = stmnt;
       update_db_list();
    }
-   
-   public void update_con_stmnt(Connection con, Statement stmnt) {
-      this.con = con;
-      this.stmnt = stmnt;
-   };
 
    private int Choose_dbs(int a) {
       int i = 0;
       int n = -1;
-      for (String db : db_list) {
-         System.out.println(i++ + ") " + db);
+      if (a != 2) {
+         for (String db : db_list) {
+            System.out.println(i++ + ") " + db);
+         }
+         System.out.println("Total no. of Databases available are ::" + i);
       }
-      System.out.println("Total no. of Databases available are ::" + i);
-      if (a == 1) {
-         try{            
+      if ((a == 1) || (a == 2)) {
+         try {
+            if(a == 2){ sc.nextLine(); }
+            System.out.println("------------------------------");
             System.out.print("Enter your choice [0-" + i + "] :- ");
-            n = sc.nextInt();
-            if ((n >= i) || (n < 0)) {
+            try {
+               n = sc.nextInt();
+            } catch (Exception e) { }
+            if ((n >= db_list.size()) || (n < 0)) {
                System.out.println("Wrong Choice!!");
-               n = Choose_dbs(1);
+               n = Choose_dbs(2);
             }
-            return n;
          } catch (Exception e) {
-            System.out.println(" Choose Database Func Error ");
+            System.out.println("\n:: Choose Database Func Error::");
          }
       }
       return n;
    }
 
    private void update_db_list() {
-      String qury = "SHOW DATABASES";
       try {
+         String qury = "SHOW DATABASES";
          ResultSet res = stmnt.executeQuery(qury);
          db_list.clear();
          while (res.next()) {
-            String db = res.getString(1);
-            db_list.add(db);
+            for (int i = 1; i > 0; i++) {
+               String db = res.getString(i);
+               db_list.add(db);
+               break;
+            }
          }
       } catch (SQLException e) {
-         System.out.println(" Update Database List Func Error ");
+         System.out.println("\n::Update Database List Func Error::");
       }
-   }
-
-   public void show_db_list() {
-      Choose_dbs(0);
    }
 
    public boolean connect_databases(String dbs) {
@@ -71,19 +70,17 @@ public class DDML_Database {
          stmnt.executeUpdate(sql);
          return true;
       } catch (Exception e) {
-         System.out.println("Unable to Connect:: Databases does not exist!");
+         System.out.println("::Unable to Connect! : Databases does not exist!::");
          return false;
       }
    }
 
    public boolean choose_connect_databases() {
-      int n = Choose_dbs(1);
       try {
-         String sql = String.format("USE %s", db_list.get(n));
-         stmnt.executeUpdate(sql);
-         return true;
+         int n = Choose_dbs(1);
+         return connect_databases(db_list.get(n));
       } catch (Exception e) {
-         System.out.println(" Connect Database Func Error ");
+         System.out.println("::Connect Database Func Error::");
       }
       return false;
    }
@@ -97,7 +94,7 @@ public class DDML_Database {
          update_db_list();
          return true;
       } catch (Exception e) {
-         System.out.println(" Create Database Func Error ");
+         System.out.println("::Create Database Func Error::");
          return false;
       }
    }
@@ -106,30 +103,26 @@ public class DDML_Database {
       try {
          String sql = String.format("DROP DATABASE %s", dbs);
          stmnt.executeUpdate(sql);
-         System.out.println("Database["+ dbs +"] Deleted!!");
+         System.out.println("Database[" + dbs + "] Deleted!!");
          update_db_list();
          return true;
-         
       } catch (Exception e) {
-         System.out.println("Unable to delete:: Database does not exist!");
+         System.out.println("::Unable to delete :!: Database does not exist!::");
          return false;
       }
    }
 
    public boolean choose_delete_database() {
-      int n = Choose_dbs(1);
       try {
-         String db = db_list.get(n);
-         String sql = String.format("DROP DATABASE %s",db);
-         System.out.println(sql);
-         stmnt.executeUpdate(sql);
-         System.out.println("Database["+ db +"] Deleted!!");
-         update_db_list();
-         return true;
-      } catch (SQLException e){
-         System.out.println(e);
-         System.out.println("Databases does not exist!!!");
+         int n = Choose_dbs(1);
+         return delete_database(db_list.get(n));
+      } catch (Exception e) {
+         System.out.println(":: Unable to delete !: Choose Databases func error::");
       }
       return false;
    }
+
+   public void show_db_list() {
+         Choose_dbs(0);
+      }
 }
