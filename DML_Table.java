@@ -23,7 +23,6 @@ public class DML_Table extends DDL_Table {
             update_tbl_list();
             return true;
         } catch (SQLException e) {
-            // System.out.println(e);
             System.out.println("Unable to delete:: Tables does not exist!");
             return false;
         }
@@ -73,7 +72,6 @@ public class DML_Table extends DDL_Table {
                 String qry = String.format("INSERT INTO %s (%s) VALUES (%s)", tbl, Columns, vals);
                 try {
                     stmnt.executeUpdate(qry);
-                    // System.out.println("Values inserted");
                 } catch (SQLException e) { }
                 
                 try {
@@ -85,7 +83,6 @@ public class DML_Table extends DDL_Table {
                 } catch (Exception e) { }
             }
         } catch (Exception e) {
-            // System.out.println(e);
             System.out.println(":: Unable to Insert ::\nInsert tbl Func Error!");
         }
         return false;
@@ -126,7 +123,6 @@ public class DML_Table extends DDL_Table {
             stmnt.executeUpdate(qry);
             System.out.println(qry);
         } catch (SQLException e) {
-            // System.out.println(e);
             System.out.println(":: Unable to Update ::\nUpdate tbl Func Error!");
         }
         return false;
@@ -140,7 +136,6 @@ public class DML_Table extends DDL_Table {
             stmnt.executeUpdate(qry);
             System.out.println(qry);
         } catch (SQLException e) {
-            // System.out.println(e);
             System.out.println(":: Unable to Update ::\nUpdate tbl Func(Value asses ar parameter) Error!");
         }
         return false;
@@ -152,7 +147,6 @@ public class DML_Table extends DDL_Table {
             String tbbl = tbl_list.get(n);
             return update_values_on_row(tbbl);
         } catch (Exception e) {
-            // System.out.println(e);
             System.out.println("Table does not exist!!\nChoose Update tbl Func Error!");
         }
         return false;

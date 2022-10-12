@@ -24,7 +24,6 @@ public class extras {
                 System.out.println("NO RESULT GENERATED!!");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Show Result function error");
         }
     }
@@ -43,7 +42,6 @@ public class extras {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Show Multiple Result function error");
         }
     }
@@ -64,7 +62,6 @@ public class extras {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println("Show Result function error");
         }
         return results;

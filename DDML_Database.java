@@ -28,20 +28,17 @@ public class DDML_Database {
       int i = 0;
       int n = -1;
       for (String db : db_list) {
-         System.out.println(i + ") " + db);
-         i++;
+         System.out.println(i++ + ") " + db);
       }
       System.out.println("Total no. of Databases available are ::" + i);
       if (a == 1) {
          try{            
             System.out.print("Enter your choice [0-" + i + "] :- ");
             n = sc.nextInt();
-            // System.out.println(n);
             if ((n >= i) || (n < 0)) {
                System.out.println("Wrong Choice!!");
                n = Choose_dbs(1);
             }
-            // System.out.println(n);
             return n;
          } catch (Exception e) {
             System.out.println(" Choose Database Func Error ");
@@ -60,7 +57,6 @@ public class DDML_Database {
             db_list.add(db);
          }
       } catch (SQLException e) {
-         // e.printStackTrace();
          System.out.println(" Update Database List Func Error ");
       }
    }
@@ -75,7 +71,6 @@ public class DDML_Database {
          stmnt.executeUpdate(sql);
          return true;
       } catch (Exception e) {
-         // System.out.println(e);
          System.out.println("Unable to Connect:: Databases does not exist!");
          return false;
       }
@@ -88,7 +83,6 @@ public class DDML_Database {
          stmnt.executeUpdate(sql);
          return true;
       } catch (Exception e) {
-         // System.out.println(e);
          System.out.println(" Connect Database Func Error ");
       }
       return false;
@@ -103,7 +97,6 @@ public class DDML_Database {
          update_db_list();
          return true;
       } catch (Exception e) {
-         // System.out.println(e);
          System.out.println(" Create Database Func Error ");
          return false;
       }
@@ -118,7 +111,6 @@ public class DDML_Database {
          return true;
          
       } catch (Exception e) {
-         // System.out.println(e);
          System.out.println("Unable to delete:: Database does not exist!");
          return false;
       }

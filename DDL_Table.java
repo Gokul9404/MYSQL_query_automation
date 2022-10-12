@@ -38,7 +38,6 @@ public class DDL_Table {
                 tbl_list.add(db);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             System.out.println(" Update table list func. Error ");
         }
     }
@@ -58,12 +57,10 @@ public class DDL_Table {
             try {
                 System.out.print("Enter your choice [0-" + i + "] :- ");
                 n = tb_sc.nextInt();
-                // System.out.println(n);
                 if ((n >= i) || (n < 0)) {
                     System.out.println("Wrong Choice!!");
                     n = Choose_tbl(1);
                 }
-                // System.out.println(n);
                 return n;
             } catch (Exception e) {
                 System.out.println(" Choose Table Func Error ");
@@ -85,12 +82,10 @@ public class DDL_Table {
             try {
                 System.out.print("Enter your choice [0-" + i + "] :- ");
                 n = tb_sc.nextInt();
-                // System.out.println(n);
                 if ((n >= i) || (n < 0)) {
                     System.out.println("Wrong Choice!!");
                     n = Choose_column(1);
                 }
-                // System.out.println(n);
                 return n;
             } catch (Exception e) {
                 System.out.println(" Choose Column Func Error ");
@@ -110,7 +105,6 @@ public class DDL_Table {
             ets.Show_Results(results);
             return true;
         } catch (SQLException e) {
-            // System.out.println(e);
             System.out.println("Unable to Retrieve:: Table does not exist!\nShow table error!");
             return false;
         }
@@ -122,7 +116,6 @@ public class DDL_Table {
             String tbbl = tbl_list.get(n);
             return show_table(tbbl);
         } catch (Exception e) {
-            // System.out.println(e);
             System.out.println(" Show Table Func Error ");
         }
         return false;
@@ -137,7 +130,6 @@ public class DDL_Table {
             ets.Show_Results(results);
             return true;
         } catch (SQLException e) {
-            // System.out.println(e);
             System.out.println("Unable to Retrieve:: Table does not exist!\nSpecific Column error!");
             return false;
         }
@@ -149,7 +141,6 @@ public class DDL_Table {
             String tbbl = tbl_list.get(n);
             return show_specific_column(tbbl);
         } catch (Exception e) {
-            // System.out.println(e);
             System.out.println(" Show Specific column Func Error ");
         }
         return false;
@@ -164,12 +155,10 @@ public class DDL_Table {
             System.out.print("Parameter to search:- ");
             paramtr = tb_sc.nextLine();
             String sql = String.format("SELECT * FROM %s where %s = '%s'", tbl, clmn_name, paramtr);
-            // System.out.println(sql);
             results = stmnt.executeQuery(sql);
             ets.Show_Results(results);
             return true;
         } catch (SQLException e) {
-            // System.out.println(e);
             System.out.println("Unable to Retrieve:: Table does not exist!\nSpecific Row error!");
             return false;
         }
@@ -181,7 +170,6 @@ public class DDL_Table {
             String tbbl = tbl_list.get(n);
             return show_specific_row(tbbl);
         } catch (Exception e) {
-            // System.out.println(e);
             System.out.println(" Show Specific Row Func Error ");
         }
         return false;
@@ -198,7 +186,6 @@ public class DDL_Table {
             tbl_property_typeList = ets.Get_Results(results, 2, 3);
             return true;
         } catch (SQLException e) {
-            // System.out.println(e);
             System.out.println(" Describe Table Func Error ");
         }
         return false;
@@ -214,7 +201,6 @@ public class DDL_Table {
                 return true;
             }
         } catch (Exception e) {
-            // System.out.println(e);
             System.out.println(" Choose Descirbe Table Func Error ");
         }
         return false;
