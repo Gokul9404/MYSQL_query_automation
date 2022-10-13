@@ -23,19 +23,17 @@ public class DDL_Table {
         update_tbl_list();
     };
 
-    public void update_con_stmnt(Connection con, Statement stmnt) {
-        this.con = con;
-        this.stmnt = stmnt;
-    };
-
     protected void update_tbl_list() {
         String qury = "SHOW TABLES";
         try {
             results = stmnt.executeQuery(qury);
             tbl_list.clear();
             while (results.next()) {
-                String db = results.getString(1);
-                tbl_list.add(db);
+                for (int i = 1; i > 0; i++) {
+                    String tb = res.getString(i);
+                    db_list.add(tb);
+                    break;
+                }
             }
         } catch (SQLException e) {
             System.out.println(" Update table list func. Error ");
@@ -43,25 +41,26 @@ public class DDL_Table {
     }
 
     protected int Choose_tbl(int a) {
-        int i = 0;
         int n = -1;
-        System.out.println("Tables in the database are:-");
-        for (String db : tbl_list) {
-            System.out.println(i + ") " + db);
-            i++;
-        }
-        if (a != 1){
+        if (a != 2) {
+            int i = 0;
+            System.out.println("Tables in the database are:-");
+            for (String db : tbl_list) {
+                System.out.println(i++ + ") " + db);
+            }
             System.out.println("Total no. of Tables available in the database are ::" + i);
         }
-        if (a == 1) {
+        if ((a == 1) || (a == 2)) {
             try {
                 System.out.print("Enter your choice [0-" + i + "] :- ");
-                n = tb_sc.nextInt();
-                if ((n >= i) || (n < 0)) {
-                    System.out.println("Wrong Choice!!");
-                    n = Choose_tbl(1);
+                try {
+                    n = tb_sc.nextInt();
+                } catch (Exception e) {
                 }
-                return n;
+                if ((n >= tbl_list.size()) || (n < 0)) {
+                    System.out.println("Wrong Choice!!");
+                    n = Choose_tbl(2);
+                }
             } catch (Exception e) {
                 System.out.println(" Choose Table Func Error ");
             }
@@ -70,23 +69,23 @@ public class DDL_Table {
     }
 
     protected int Choose_column(int a) {
-        int i = 0;
         int n = -1;
-        System.out.println("Columns in table:-");
-        for (String clmn : tbl_property_nameList) {
-            System.out.println(i + ") " + clmn);
-            i++;
+        if(a != 2){
+            int i = 0;
+            System.out.println("Columns in table:-");
+            for (String clmn : tbl_property_nameList) {
+                System.out.println(i + ") " + clmn);
+                i++;
+            }
         }
-        n = i;
-        if (a == 1) {
+        if ((a == 1) || (a == 2)){
             try {
                 System.out.print("Enter your choice [0-" + i + "] :- ");
                 n = tb_sc.nextInt();
-                if ((n >= i) || (n < 0)) {
+                if ((n >= tbl_list.size() || (n < 0)) {
                     System.out.println("Wrong Choice!!");
-                    n = Choose_column(1);
+                    n = Choose_column(2);
                 }
-                return n;
             } catch (Exception e) {
                 System.out.println(" Choose Column Func Error ");
             }
@@ -94,29 +93,31 @@ public class DDL_Table {
         return n;
     }
 
-    public void show_tb_list() {
-        Choose_tbl(0);
-    }
-
-    public boolean show_table(String tbl) {
+    public boolean describe_table(String tbl) {
         try {
-            String sql = String.format("SELECT * FROM %s", tbl);
+            String sql = String.format("DESCRIBE %s", tbl);
+            tbl_property_nameList.clear();
+            tbl_property_typeList.clear();
             results = stmnt.executeQuery(sql);
-            ets.Show_Results(results);
+            tbl_property_nameList = ets.Get_Results(results, 1, 2);
+            results = stmnt.executeQuery(sql);
+            tbl_property_typeList = ets.Get_Results(results, 2, 3);
             return true;
         } catch (SQLException e) {
-            System.out.println("Unable to Retrieve:: Table does not exist!\nShow table error!");
-            return false;
+            System.out.println(" Describe Table Func Error ");
         }
+        return false;
     }
 
-    public boolean choose_show_table() {
-        int n = Choose_tbl(1);
+    public boolean choose_describe_table() {
         try {
-            String tbbl = tbl_list.get(n);
-            return show_table(tbbl);
+            int n = Choose_tbl(1);
+            String tbl = tbl_list.get(n);
+            describe_table(tbl);
+            ets.Show_Mutiple_Single_Results(tbl_property_nameList, tbl_property_typeList);
+            return true;
         } catch (Exception e) {
-            System.out.println(" Show Table Func Error ");
+            System.out.println(" Choose Descirbe Table Func Error ");
         }
         return false;
     }
@@ -134,12 +135,11 @@ public class DDL_Table {
             return false;
         }
     }
-    
+
     public boolean choose_show_specific_column() {
-        int n = Choose_tbl(1);
         try {
-            String tbbl = tbl_list.get(n);
-            return show_specific_column(tbbl);
+            int n = Choose_tbl(1);
+            return show_specific_column(tbl_list.get(n));
         } catch (Exception e) {
             System.out.println(" Show Specific column Func Error ");
         }
@@ -154,55 +154,58 @@ public class DDL_Table {
             String clmn_name = tbl_property_nameList.get(z);
             System.out.print("Parameter to search:- ");
             paramtr = tb_sc.nextLine();
-            String sql = String.format("SELECT * FROM %s where %s = '%s'", tbl, clmn_name, paramtr);
+            return show_specific_row_(tbl, paramtr, clmn_name);
+        } catch (SQLException e) {
+            System.out.println("Unable to Retrieve:: show_specefic_row func error");
+            return false;
+        }
+    }
+
+    public boolean show_specific_row_(String tbl, String Column_to_search_for, String To_search_for) {
+        try {
+            String sql = String.format("SELECT * FROM %s where %s = '%s'", tbl, Column_to_search_for, To_search_for);
             results = stmnt.executeQuery(sql);
             ets.Show_Results(results);
             return true;
         } catch (SQLException e) {
-            System.out.println("Unable to Retrieve:: Table does not exist!\nSpecific Row error!");
+            System.out.println("Unable to Retrieve:: Table does not exist!\n'show_specefic_row_' func error!");
             return false;
         }
     }
 
     public boolean choose_show_specific_row() {
-        int n = Choose_tbl(1);
         try {
-            String tbbl = tbl_list.get(n);
-            return show_specific_row(tbbl);
+            int n = Choose_tbl(1);
+            return show_specific_row(tbl_list.get(n));
         } catch (Exception e) {
             System.out.println(" Show Specific Row Func Error ");
         }
         return false;
     }
 
-    public boolean describe_table(String tbl) {
+    public boolean show_table(String tbl) {
         try {
-            String sql = String.format("DESCRIBE %s", tbl);
-            tbl_property_nameList.clear();
-            tbl_property_typeList.clear();
+            String sql = String.format("SELECT * FROM %s", tbl);
             results = stmnt.executeQuery(sql);
-            tbl_property_nameList = ets.Get_Results(results, 1, 2);
-            results =  stmnt.executeQuery(sql);
-            tbl_property_typeList = ets.Get_Results(results, 2, 3);
+            ets.Show_Results(results);
             return true;
         } catch (SQLException e) {
-            System.out.println(" Describe Table Func Error ");
+            System.out.println("Unable to Retrieve:: Table does not exist!\nShow table error!");
+            return false;
+        }
+    }
+
+    public boolean choose_show_table() {
+        try {
+            int n = Choose_tbl(1);
+            return show_table(tbl_list.get(n));
+        } catch (Exception e) {
+            System.out.println(" Show Table Func Error ");
         }
         return false;
     }
 
-    public boolean choose_describe_table() {
-        int n = Choose_tbl(1);
-        try {
-            String tbl = tbl_list.get(n);
-            boolean z = describe_table(tbl);
-            if(z){
-                ets.Show_Mutiple_Single_Results(tbl_property_nameList, tbl_property_typeList);
-                return true;
-            }
-        } catch (Exception e) {
-            System.out.println(" Choose Descirbe Table Func Error ");
-        }
-        return false;
+    public void show_tb_list() {
+        Choose_tbl(0);
     }
 }
