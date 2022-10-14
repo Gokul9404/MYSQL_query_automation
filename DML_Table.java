@@ -16,11 +16,12 @@ public class DML_Table extends DDL_Table {
 
     public boolean delete_specific_row(String tbbl,String column_para,String value, int type) {
         try {
+            String sql = "";
             if(type == 0){
-                String sql = String.format("DELETE * %s WHERE %s = %s", tbbl,column_para, value);
+                sql = String.format("DELETE * %s WHERE %s = %s", tbbl,column_para, value);
             }
             else{
-                String sql = String.format("DELETE * %s WHERE %s = '%s'", tbbl,column_para, value);
+                sql = String.format("DELETE * %s WHERE %s = '%s'", tbbl,column_para, value);
             }
             stmnt.executeUpdate(sql);
             update_tbl_list();
@@ -33,20 +34,21 @@ public class DML_Table extends DDL_Table {
 
     public boolean choose_specific_row_and_delete(String tbbl, int call_type) {
         try {
+            int clm_lgt = -1;
             if(call_type == 0){
                 describe_table(tbbl);
-                int clm_lgt = Choose_column(0);
+                clm_lgt = Choose_column(0);
             }else{
-                int clm_lgt = Choose_column(3);
+                clm_lgt = Choose_column(3);
             }
             int pr;
             String paramtr, value, condition_para, condition_value;
             paramtr = value = condition_para =  condition_value = "";
             System.out.print("Enter Column Parameter where to delete [0-" + clm_lgt + "] :- ");
             pr = tb_sc.nextInt();
-            if(pr < 0) || (pr > clm_lgt){
+            if((pr < 0) || (pr > clm_lgt)){
                 System.out.println("Wrong Input!!!");
-                return choose_delete_specific_row(tbbl, 1);
+                return choose_specific_row_and_delete(tbbl, 1);
             }
             condition_para = tbl_property_nameList.get(pr);
             System.out.print("Value where to delete:- ");
@@ -57,7 +59,7 @@ public class DML_Table extends DDL_Table {
             } else {
                 return delete_specific_row(tbbl, condition_para, condition_value, 1);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Unable to delete row:: choose_specific_row func error!");
         }
         return false;
@@ -68,7 +70,7 @@ public class DML_Table extends DDL_Table {
             int n = Choose_tbl(1);
             String tbbl = tbl_list.get(n);
             System.out.println("Table seleted :-" + tbbl);
-            return delete_specific_row(tbbl,0);
+            return choose_specific_row_and_delete(tbbl,0);
         } catch (Exception e) {
             System.out.println("Table does not exist!!!");
         }
@@ -184,7 +186,7 @@ public class DML_Table extends DDL_Table {
             condition_value = tb_sc.nextLine();
 
             update_values_on_row(tbl, paramtr, value, condition_para, condition_value);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println(":: Unable to Update ::\nUpdate tbl Func Error!");
         }
         return false;

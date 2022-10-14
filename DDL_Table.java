@@ -31,7 +31,7 @@ public class DDL_Table {
             while (results.next()) {
                 for (int i = 1; i > 0; i++) {
                     String tb = res.getString(i);
-                    db_list.add(tb);
+                    tbl_list.add(tb);
                     break;
                 }
             }
@@ -42,8 +42,8 @@ public class DDL_Table {
 
     protected int Choose_tbl(int a) {
         int n = -1;
+        int i = 0;
         if (a != 2) {
-            int i = 0;
             System.out.println("Tables in the database are:-");
             for (String db : tbl_list) {
                 System.out.println(i++ + ") " + db);
@@ -72,9 +72,8 @@ public class DDL_Table {
         if(a==3){
             return tbl_property_nameList.size();
         }
-        int n = -1;
+        int n = -1, i = 0;
         if(a != 2){
-            int i = 0;
             System.out.println("Columns in table:-");
             for (String clmn : tbl_property_nameList) {
                 System.out.println(i++ + ") " + clmn);
@@ -85,7 +84,7 @@ public class DDL_Table {
             try {
                 System.out.print("Enter your choice [0-" + i + "] :- ");
                 n = tb_sc.nextInt();
-                if ((n >= tbl_list.size() || (n < 0)) {
+                if ( (n >= tbl_list.size()) || (n < 0) ){
                     System.out.println("Wrong Choice!!");
                     n = Choose_column(2);
                 }
@@ -158,7 +157,7 @@ public class DDL_Table {
             System.out.print("Parameter to search:- ");
             paramtr = tb_sc.nextLine();
             return show_specific_row_(tbl, paramtr, clmn_name);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.out.println("Unable to Retrieve:: show_specefic_row func error");
             return false;
         }
