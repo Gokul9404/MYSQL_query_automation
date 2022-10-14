@@ -69,15 +69,18 @@ public class DDL_Table {
     }
 
     protected int Choose_column(int a) {
+        if(a==3){
+            return tbl_property_nameList.size();
+        }
         int n = -1;
         if(a != 2){
             int i = 0;
             System.out.println("Columns in table:-");
             for (String clmn : tbl_property_nameList) {
-                System.out.println(i + ") " + clmn);
-                i++;
+                System.out.println(i++ + ") " + clmn);
             }
         }
+        n = i;  // Use for DML_Table's func
         if ((a == 1) || (a == 2)){
             try {
                 System.out.print("Enter your choice [0-" + i + "] :- ");
