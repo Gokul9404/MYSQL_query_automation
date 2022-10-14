@@ -14,6 +14,67 @@ public class DML_Table extends DDL_Table {
         return false;
     }
 
+    public boolean delete_specific_row(String tbbl,String column_para,String value, int type) {
+        try {
+            if(type == 0){
+                String sql = String.format("DELETE * %s WHERE %s = %s", tbbl,column_para, value);
+            }
+            else{
+                String sql = String.format("DELETE * %s WHERE %s = '%s'", tbbl,column_para, value);
+            }
+            stmnt.executeUpdate(sql);
+            update_tbl_list();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Unable to delete:: Tables does not exist!");
+        }
+        return false;
+    }
+
+    public boolean choose_specific_row_and_delete(String tbbl, int call_type) {
+        try {
+            if(call_type == 0){
+                describe_table(tbbl);
+                int clm_lgt = Choose_column(0);
+            }else{
+                int clm_lgt = Choose_column(3);
+            }
+            int pr;
+            String paramtr, value, condition_para, condition_value;
+            paramtr = value = condition_para =  condition_value = "";
+            System.out.print("Enter Column Parameter where to delete [0-" + clm_lgt + "] :- ");
+            pr = tb_sc.nextInt();
+            if(pr < 0) || (pr > clm_lgt){
+                System.out.println("Wrong Input!!!");
+                return choose_delete_specific_row(tbbl, 1);
+            }
+            condition_para = tbl_property_nameList.get(pr);
+            System.out.print("Value where to delete:- ");
+            value = tb_sc.nextLine();
+            String proprty = tbl_property_typeList.get(pr);
+            if (proprty.matches("int") || proprty.matches("decimal") || proprty.matches("float") || proprty.matches("double")) {
+                return delete_specific_row(tbbl, condition_para, condition_value, 0);
+            } else {
+                return delete_specific_row(tbbl, condition_para, condition_value, 1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Unable to delete row:: choose_specific_row func error!");
+        }
+        return false;
+    }
+
+    public boolean choose_delete_specific_row_from_tbl() {
+        try {
+            int n = Choose_tbl(1);
+            String tbbl = tbl_list.get(n);
+            System.out.println("Table seleted :-" + tbbl);
+            return delete_specific_row(tbbl,0);
+        } catch (Exception e) {
+            System.out.println("Table does not exist!!!");
+        }
+        return false;
+    }
+
     public boolean delete_table(String tbbl) {
         try {
             String sql = String.format("DROP TABLE %s", tbbl);
@@ -24,13 +85,13 @@ public class DML_Table extends DDL_Table {
             return true;
         } catch (SQLException e) {
             System.out.println("Unable to delete:: Tables does not exist!");
-            return false;
         }
+        return false;
     }
 
     public boolean choose_delete_table() {
-        int n = Choose_tbl(1);
         try {
+            int n = Choose_tbl(1);
             String tbbl = tbl_list.get(n);
             System.out.println("Table seleted :-" + tbbl);
             System.out.print("Delete above table [yes: 1/ no:0]:-");
@@ -41,7 +102,6 @@ public class DML_Table extends DDL_Table {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println(e);
             System.out.println("Table does not exist!!!");
         }
         return false;
@@ -72,11 +132,16 @@ public class DML_Table extends DDL_Table {
                 String qry = String.format("INSERT INTO %s (%s) VALUES (%s)", tbl, Columns, vals);
                 try {
                     stmnt.executeUpdate(qry);
-                } catch (SQLException e) { }
-                
+                } catch (SQLException e) { 
+                    System.out.println("Values not inserted into Table :: Wrong input type error!");
+                }
                 try {
                     System.out.print("Quit inserting( YES [1] / NO [0]):-");
-                    Fin = tb_sc.nextInt();
+                    try {
+                        Fin = tb_sc.nextInt();
+                    } catch (Exception e) { 
+                        Fin = 0;
+                    }
                     if (Fin != 0) {
                         return true;
                     }
@@ -89,12 +154,11 @@ public class DML_Table extends DDL_Table {
     }
 
     public boolean choose_table_insert_values() {
-        int n = Choose_tbl(1);
         try {
+            int n = Choose_tbl(1);
             String tbbl = tbl_list.get(n);
             return insert_values(tbbl);
         } catch (Exception e) {
-            // System.out.println(e);
             System.out.println(":: Choose Table insert func error!! ::");
         }
         return false;
@@ -106,7 +170,8 @@ public class DML_Table extends DDL_Table {
             int clm_lgt = Choose_column(0);
             int pr, cpr;
             String paramtr, value, condition_para, condition_value;
-            System.out.print("Enter Column to change [0-" + clm_lgt + "] :- ");
+            paramtr = value = condition_para =  condition_value = "";
+            System.out.print("Enter Column where to change [0-" + clm_lgt + "] :- ");
             pr = tb_sc.nextInt();
             paramtr = tbl_property_nameList.get(pr);
             System.out.print("Value to Update:- ");
@@ -118,32 +183,26 @@ public class DML_Table extends DDL_Table {
             System.out.print("Condition Value[s]: ");
             condition_value = tb_sc.nextLine();
 
-            String qry = String.format("UPDATE %s set %s = '%s' WHERE %s = '%s'", tbl, paramtr, value, condition_para,
-                    condition_value);
-            stmnt.executeUpdate(qry);
-            System.out.println(qry);
+            update_values_on_row(tbl, paramtr, value, condition_para, condition_value);
         } catch (SQLException e) {
             System.out.println(":: Unable to Update ::\nUpdate tbl Func Error!");
         }
         return false;
     }
 
-    public boolean update_values_on_row(String tbl, String paramtr, String value, String condition_para,
-            String condition_value) {
+    public boolean update_values_on_row(String tbl, String paramtr, String value, String condition_para, String condition_value) {
         try {
-            String qry = String.format("UPDATE %s set %s = '%s' WHERE %s = '%s'", tbl, paramtr, value, condition_para,
-                    condition_value);
+            String qry = String.format("UPDATE %s set %s = '%s' WHERE %s = '%s'", tbl, paramtr, value, condition_para,condition_value);
             stmnt.executeUpdate(qry);
-            System.out.println(qry);
         } catch (SQLException e) {
-            System.out.println(":: Unable to Update ::\nUpdate tbl Func(Value asses ar parameter) Error!");
+            System.out.println(":: Unable to Update ::\nUpdate tbl Func(Value as parameter) Error!");
         }
         return false;
     }
 
     public boolean choose_tbl_and_update_values_on_row() {
-        int n = Choose_tbl(1);
         try {
+            int n = Choose_tbl(1);
             String tbbl = tbl_list.get(n);
             return update_values_on_row(tbbl);
         } catch (Exception e) {
@@ -151,5 +210,4 @@ public class DML_Table extends DDL_Table {
         }
         return false;
     }
-
 }
