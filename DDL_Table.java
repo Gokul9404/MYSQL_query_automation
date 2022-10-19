@@ -30,7 +30,7 @@ public class DDL_Table {
             tbl_list.clear();
             while (results.next()) {
                 for (int i = 1; i > 0; i++) {
-                    String tb = res.getString(i);
+                    String tb = results.getString(i);
                     tbl_list.add(tb);
                     break;
                 }

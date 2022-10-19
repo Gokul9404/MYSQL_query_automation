@@ -10,18 +10,14 @@ public class DML_Table extends DDL_Table {
         super(con, stmnt);
     };
 
-    public boolean create_table() {
-        return false;
-    }
-
     public boolean delete_specific_row(String tbbl,String column_para,String value, int type) {
         try {
             String sql = "";
             if(type == 0){
-                sql = String.format("DELETE * %s WHERE %s = %s", tbbl,column_para, value);
+                sql = String.format("DELETE FROM %s WHERE %s = %s", tbbl,column_para, value);
             }
             else{
-                sql = String.format("DELETE * %s WHERE %s = '%s'", tbbl,column_para, value);
+                sql = String.format("DELETE FROM %s WHERE %s = '%s'", tbbl,column_para, value);
             }
             stmnt.executeUpdate(sql);
             update_tbl_list();
@@ -51,8 +47,9 @@ public class DML_Table extends DDL_Table {
                 return choose_specific_row_and_delete(tbbl, 1);
             }
             condition_para = tbl_property_nameList.get(pr);
+            tb_sc.nextLine();
             System.out.print("Value where to delete:- ");
-            value = tb_sc.nextLine();
+            condition_value = tb_sc.nextLine();
             String proprty = tbl_property_typeList.get(pr);
             if (proprty.matches("int") || proprty.matches("decimal") || proprty.matches("float") || proprty.matches("double")) {
                 return delete_specific_row(tbbl, condition_para, condition_value, 0);

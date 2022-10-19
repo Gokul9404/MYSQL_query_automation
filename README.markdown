@@ -2,9 +2,9 @@
 
 # MYSQL Query Automation using Java
 
-A package made by using **Java**'s **JDBC API**, to make the basic Queries of MYSQL run within a Java program.
+A bare-bone package made by using **Java**'s **JDBC API**, to make the basic Queries of MYSQL run within a Java program.
 
-Each class prints the Result of the Query executed, bu you can make them return the Result just by replacing `Show_Result` function with `Get_Results` function declared in ``Extras.class`` 
+<!-- Each class prints the Result of the Query executed, bu you can make them return the Result just by replacing `Show_Result` function with `Get_Results` function declared in ``Extras.class``  -->
 ***
 ### *Package includes Queries Automation of the following:*
 ## ***Database Commands***
@@ -22,7 +22,8 @@ Each class prints the Result of the Query executed, bu you can make them return 
 >3. Describe Table
 >#### *DML Commands*
 >1. Delete Table
->2. Update Table Values
+>2. Delete Specific Row on a Table
+>3. Update Table Values
 ***
 ## Technologies
 
