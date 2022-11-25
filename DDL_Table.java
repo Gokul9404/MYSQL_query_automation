@@ -43,24 +43,15 @@ public class DDL_Table {
     protected int Choose_tbl(int a) {
         int n = -1;
         int i = 0;
-        if (a != 2) {
-            System.out.println("Tables in the database are:-");
-            for (String db : tbl_list) {
-                System.out.println(i++ + ") " + db);
-            }
-            System.out.println("Total no. of Tables available in the database are ::" + i);
+        System.out.println("Tables in the database are:-");
+        for (String db : tbl_list) {
+            System.out.println(i++ + ") " + db);
         }
-        if ((a == 1) || (a == 2)) {
+        System.out.println("Total no. of Tables available in the database are ::" + i);
+        if (a == 1) {
+            i = tbl_list.size() - 1;
             try {
-                System.out.print("Enter your choice [0-" + i + "] :- ");
-                try {
-                    n = tb_sc.nextInt();
-                } catch (Exception e) {
-                }
-                if ((n >= tbl_list.size()) || (n < 0)) {
-                    System.out.println("Wrong Choice!!");
-                    n = Choose_tbl(2);
-                }
+                n = ets.Get_userInput(0, i);
             } catch (Exception e) {
                 System.out.println(" Choose Table Func Error ");
             }
@@ -73,21 +64,17 @@ public class DDL_Table {
             return tbl_property_nameList.size();
         }
         int n = -1, i = 0;
-        if(a != 2){
-            System.out.println("Columns in table:-");
-            for (String clmn : tbl_property_nameList) {
-                System.out.println(i++ + ") " + clmn);
-            }
+        
+        System.out.println("Columns in table:-");
+        for (String clmn : tbl_property_nameList) {
+            System.out.println(i++ + ") " + clmn);
         }
+        
         n = i;  // Use for DML_Table's func
-        if ((a == 1) || (a == 2)){
+        
+        if (a == 1){
             try {
-                System.out.print("Enter your choice [0-" + i + "] :- ");
-                n = tb_sc.nextInt();
-                if ( (n >= tbl_list.size()) || (n < 0) ){
-                    System.out.println("Wrong Choice!!");
-                    n = Choose_column(2);
-                }
+                n = ets.Get_userInput(0, tbl_property_nameList.size()-1);
             } catch (Exception e) {
                 System.out.println(" Choose Column Func Error ");
             }
