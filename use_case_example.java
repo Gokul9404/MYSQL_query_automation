@@ -11,18 +11,17 @@ import java.util.Scanner;
 public class use_case_example {
    public static void main(String[] args) {
       try {
-         int z = 0, Run = 1;
+         int choice = 0, Run = 1;
          extras ets = new extras();
          Scanner tb_sc = new Scanner(System.in);
          Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "gokul");
          Statement statement = conn.createStatement();
          
-         DML_Table tabel = new DML_Table(conn, statement);
          DDML_Database dbs = new DDML_Database(conn, statement);
-         
          System.out.println(":: Select a database to have some work ::");
          dbs.choose_connect_databases();
          
+         DML_Table tabel = new DML_Table(conn, statement);
          while (Run == 1) {
             System.out.println(":: Select any operation to perform on database/table on database ::");
             System.out.println("1) Show table list");
@@ -33,19 +32,9 @@ public class use_case_example {
             System.out.println("6) Show table content of specific column");
             System.out.println("7) Delete any table");
             System.out.println("8) Exit");
-            System.out.print("Enter your choice [1-7] :- ");
-            while (true) {
-               try {
-                  z = tb_sc.nextInt();
-                  if (z > 0 && z < 9) {
-                     break;
-                  }
-               } catch (Exception e) {
-               }
-               System.out.println("Wrong choice enter again!!");
-            }
-            tb_sc.nextLine();
-            switch (z) {
+            choice = ets.Get_userInput(1, 8);
+            ets.user_inputScanner.nextLine();
+            switch (choice) {
                case 1:
                   tabel.show_tb_list();
                   break;
@@ -81,16 +70,14 @@ public class use_case_example {
                   break;
             }
             if (Run == 1) {
-               tb_sc.nextLine();
+               ets.user_inputScanner.nextLine();
                System.out.print("\033[H\033[2J");
                System.out.flush();
             }
          }
-
          conn.close();
       } catch (SQLException e) {
          e.printStackTrace();
       }
-
    }
 }
