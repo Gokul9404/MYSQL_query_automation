@@ -3,8 +3,27 @@ package MySQL_DBMS;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.util.Scanner;
 
 public class extras {
+
+    public Scanner user_inputScanner = new Scanner(System.in);
+
+    public int Get_userInput(int range_start, int range_end) {
+        int choice;
+        while (true) {
+            try {
+                System.out.print("Enter your choice[" + range_start + " - "+ range_end+"] :- ");
+                choice = user_inputScanner.nextInt();
+                if ((choice >= range_start) && (choice <= range_end)) {
+                    return choice;
+                }
+            } catch (Exception e) {
+            }
+            System.out.println("\t Wrong choice enter again!!");
+        }
+    }
+
     public void Show_Results(ResultSet res) {
         int res_count = 0;
         try {
