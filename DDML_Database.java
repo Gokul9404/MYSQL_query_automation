@@ -22,24 +22,15 @@ public class DDML_Database {
    private int Choose_dbs(int a) {
       int i = 0;
       int n = -1;
-      if (a != 2) {
-         for (String db : db_list) {
-            System.out.println(i++ + ") " + db);
-         }
-         System.out.println("Total no. of Databases available are ::" + i);
+      for (String db : db_list) {
+         System.out.println(i++ + ") " + db);
       }
-      if ((a == 1) || (a == 2)) {
+      System.out.println("Total no. of Databases available are ::" + i);
+      
+      if (a == 1)  {
          try {
-            if(a == 2){ sc.nextLine(); }
             System.out.println("------------------------------");
-            System.out.print("Enter your choice [0-" + i + "] :- ");
-            try {
-               n = sc.nextInt();
-            } catch (Exception e) { }
-            if ((n >= db_list.size()) || (n < 0)) {
-               System.out.println("Wrong Choice!!");
-               n = Choose_dbs(2);
-            }
+            n = ets.Get_userInput(0,db_list.size()-1);
          } catch (Exception e) {
             System.out.println("\n:: Choose Database Func Error::");
          }
