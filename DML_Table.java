@@ -1,9 +1,8 @@
 package MySQL_DBMS;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
+import java.sql.SQLException;
 
 public class DML_Table extends DDL_Table {
     public DML_Table(Connection con, Statement stmnt) {
@@ -28,28 +27,18 @@ public class DML_Table extends DDL_Table {
         return false;
     }
 
-    public boolean choose_specific_row_and_delete(String tbbl, int call_type) {
+    public boolean choose_specific_row_and_delete(String tbbl) {
         try {
-            int clm_lgt = -1;
-            if(call_type == 0){
-                describe_table(tbbl);
-                clm_lgt = Choose_column(0);
-            }else{
-                clm_lgt = Choose_column(3);
-            }
-            int pr;
+            int pr, clm_lgt = -1;
+            clm_lgt = Choose_column(0);
             String paramtr, value, condition_para, condition_value;
             paramtr = value = condition_para =  condition_value = "";
-            System.out.print("Enter Column Parameter where to delete [0-" + clm_lgt + "] :- ");
-            pr = tb_sc.nextInt();
-            if((pr < 0) || (pr > clm_lgt)){
-                System.out.println("Wrong Input!!!");
-                return choose_specific_row_and_delete(tbbl, 1);
-            }
+            System.out.print("Enter Column Parameter where to delete");
+            pr = ets.Get_userInput(0, clm_lgt);
             condition_para = tbl_property_nameList.get(pr);
-            tb_sc.nextLine();
+            ets.user_inputScanner.nextLine();
             System.out.print("Value where to delete:- ");
-            condition_value = tb_sc.nextLine();
+            condition_value = ets.user_inputScanner.nextLine();
             String proprty = tbl_property_typeList.get(pr);
             if (proprty.matches("int") || proprty.matches("decimal") || proprty.matches("float") || proprty.matches("double")) {
                 return delete_specific_row(tbbl, condition_para, condition_value, 0);
@@ -67,7 +56,7 @@ public class DML_Table extends DDL_Table {
             int n = Choose_tbl(1);
             String tbbl = tbl_list.get(n);
             System.out.println("Table seleted :-" + tbbl);
-            return choose_specific_row_and_delete(tbbl,0);
+            return choose_specific_row_and_delete(tbbl);
         } catch (Exception e) {
             System.out.println("Table does not exist!!!");
         }
@@ -94,7 +83,7 @@ public class DML_Table extends DDL_Table {
             String tbbl = tbl_list.get(n);
             System.out.println("Table seleted :-" + tbbl);
             System.out.print("Delete above table [yes: 1/ no:0]:-");
-            int cnf = tb_sc.nextInt();
+            int cnf = ets.user_inputScanner.nextInt();
             if (cnf != 0) {
                 return delete_table(tbbl);
             } else {
@@ -114,13 +103,13 @@ public class DML_Table extends DDL_Table {
             String vals = "", Columns = "", value;
             Columns = tbl_property_nameList.toString();
             Columns = Columns.substring(1, Columns.length() - 1);
-            tb_sc.nextLine();
+            ets.user_inputScanner.nextLine();
 
             while (true) {
                 for (int i = 0; i < tbl_property_nameList.size(); i++) {
                     String proprty = tbl_property_typeList.get(i);
                     System.out.print("Column name (" + tbl_property_nameList.get(i) + ") type:(" + proprty + ")\nEnter value :>");
-                    value = tb_sc.next();
+                    value = ets.user_inputScanner.next();
                     if (proprty.matches("int") || proprty.matches("decimal") || proprty.matches("float") || proprty.matches("double")) {
                         vals = vals + String.format("%s,", value);
                     } else {
@@ -137,7 +126,7 @@ public class DML_Table extends DDL_Table {
                 try {
                     System.out.print("Quit inserting( YES [1] / NO [0]):-");
                     try {
-                        Fin = tb_sc.nextInt();
+                        Fin = ets.user_inputScanner.nextInt();
                     } catch (Exception e) { 
                         Fin = 0;
                     }
@@ -171,16 +160,16 @@ public class DML_Table extends DDL_Table {
             String paramtr, value, condition_para, condition_value;
             paramtr = value = condition_para =  condition_value = "";
             System.out.print("Enter Column where to change [0-" + clm_lgt + "] :- ");
-            pr = tb_sc.nextInt();
+            pr = ets.user_inputScanner.nextInt();
             paramtr = tbl_property_nameList.get(pr);
             System.out.print("Value to Update:- ");
-            value = tb_sc.nextLine();
+            value = ets.user_inputScanner.nextLine();
 
             System.out.print("Enter Column Parameter [0-" + clm_lgt + "] :- ");
-            cpr = tb_sc.nextInt();
+            cpr = ets.user_inputScanner.nextInt();
             condition_para = tbl_property_nameList.get(cpr);
             System.out.print("Condition Value[s]: ");
-            condition_value = tb_sc.nextLine();
+            condition_value = ets.user_inputScanner.nextLine();
 
             update_values_on_row(tbl, paramtr, value, condition_para, condition_value);
         } catch (Exception e) {

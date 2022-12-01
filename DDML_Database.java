@@ -1,16 +1,16 @@
 package MySQL_DBMS;
 
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class DDML_Database {
    Connection con;
    Statement stmnt;
-   Scanner sc = new Scanner(System.in);
+   extras ets = new extras();
    ArrayList<String> db_list = new ArrayList<>();
 
    public DDML_Database(Connection con, Statement stmnt) {
@@ -28,9 +28,14 @@ public class DDML_Database {
       System.out.println("Total no. of Databases available are ::" + i);
       
       if (a == 1)  {
+         int lst_size = db_list.size() - 1;
+         if( lst_size == -1){
+            System.out.println("No any database exist!!");
+            return -1;
+         }
          try {
             System.out.println("------------------------------");
-            n = ets.Get_userInput(0,db_list.size()-1);
+            n = ets.Get_userInput(0,lst_size);
          } catch (Exception e) {
             System.out.println("\n:: Choose Database Func Error::");
          }
@@ -78,7 +83,7 @@ public class DDML_Database {
 
    public boolean create_database() {
       System.out.print("Enter name of the database to create:- ");
-      String dtbs = sc.nextLine();
+      String dtbs = ets.user_inputScanner.nextLine();
       try {
          String sql = String.format("CREATE DATABASE %s", dtbs);
          stmnt.executeUpdate(sql);

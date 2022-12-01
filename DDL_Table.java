@@ -2,16 +2,14 @@ package MySQL_DBMS;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class DDL_Table {
     Connection con;
     Statement stmnt;
     ResultSet results, res;
-    Scanner tb_sc = new Scanner(System.in);
     extras ets = new extras();
     ArrayList<String> tbl_list = new ArrayList<>();
     ArrayList<String> tbl_property_nameList = new ArrayList<>();
@@ -49,9 +47,13 @@ public class DDL_Table {
         }
         System.out.println("Total no. of Tables available in the database are ::" + i);
         if (a == 1) {
-            i = tbl_list.size() - 1;
+            int lst_size = tbl_list.size() - 1;
+            if( lst_size == -1){
+                System.out.println("No any table int the database!!");
+                return -1;
+            }
             try {
-                n = ets.Get_userInput(0, i);
+                n = ets.Get_userInput(0, lst_size);
             } catch (Exception e) {
                 System.out.println(" Choose Table Func Error ");
             }
@@ -141,9 +143,9 @@ public class DDL_Table {
             int z = Choose_column(1);
             String paramtr;
             String clmn_name = tbl_property_nameList.get(z);
-            System.out.print("Parameter to search:- ");
-            paramtr = tb_sc.nextLine();
-            return show_specific_row_(tbl, paramtr, clmn_name);
+            ets.user_inputScanner.nextLine();
+            paramtr = ets.user_inputScanner.nextLine();
+            return show_specific_row_(tbl, clmn_name, paramtr);
         } catch (Exception e) {
             System.out.println("Unable to Retrieve:: show_specefic_row func error");
             return false;
@@ -153,6 +155,7 @@ public class DDL_Table {
     public boolean show_specific_row_(String tbl, String Column_to_search_for, String To_search_for) {
         try {
             String sql = String.format("SELECT * FROM %s where %s = '%s'", tbl, Column_to_search_for, To_search_for);
+            System.out.println(sql);
             results = stmnt.executeQuery(sql);
             ets.Show_Results(results);
             return true;
