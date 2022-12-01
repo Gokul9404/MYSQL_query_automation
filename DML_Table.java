@@ -9,7 +9,7 @@ public class DML_Table extends DDL_Table {
         super(con, stmnt);
     };
 
-    public boolean delete_specific_row(String tbbl,String column_para,String value, int type) {
+    protected boolean delete_specific_row(String tbbl,String column_para,String value, int type) {
         try {
             String sql = "";
             if(type == 0){
@@ -63,7 +63,7 @@ public class DML_Table extends DDL_Table {
         return false;
     }
 
-    public boolean delete_table(String tbbl) {
+    protected boolean delete_table(String tbbl) {
         try {
             String sql = String.format("DROP TABLE %s", tbbl);
             System.out.println(sql);
@@ -95,7 +95,7 @@ public class DML_Table extends DDL_Table {
         return false;
     }
 
-    public boolean insert_values(String tbl) {
+    protected boolean insert_values(String tbl) {
         try {
             describe_table(tbl);
             int Fin, total_column, Int_Input;
@@ -152,7 +152,7 @@ public class DML_Table extends DDL_Table {
         return false;
     }
 
-    public boolean update_values_on_row(String tbl) {
+    protected boolean update_values_on_row(String tbl) {
         try {
             describe_table(tbl);
             int clm_lgt = Choose_column(0);
@@ -178,7 +178,7 @@ public class DML_Table extends DDL_Table {
         return false;
     }
 
-    public boolean update_values_on_row(String tbl, String paramtr, String value, String condition_para, String condition_value) {
+    protected boolean update_values_on_row(String tbl, String paramtr, String value, String condition_para, String condition_value) {
         try {
             String qry = String.format("UPDATE %s set %s = '%s' WHERE %s = '%s'", tbl, paramtr, value, condition_para,condition_value);
             stmnt.executeUpdate(qry);

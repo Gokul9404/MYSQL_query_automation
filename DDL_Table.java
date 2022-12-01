@@ -84,7 +84,7 @@ public class DDL_Table {
         return n;
     }
 
-    public boolean describe_table(String tbl) {
+    protected boolean describe_table(String tbl) {
         try {
             String sql = String.format("DESCRIBE %s", tbl);
             tbl_property_nameList.clear();
@@ -113,7 +113,7 @@ public class DDL_Table {
         return false;
     }
 
-    public boolean show_specific_column(String tbl) {
+    protected boolean show_specific_column(String tbl) {
         try {
             describe_table(tbl);
             String clmn_name = tbl_property_nameList.get(Choose_column(1));
@@ -137,7 +137,7 @@ public class DDL_Table {
         return false;
     }
 
-    public boolean show_specific_row(String tbl) {
+    protected boolean show_specific_row(String tbl) {
         try {
             describe_table(tbl);
             int z = Choose_column(1);
@@ -152,7 +152,7 @@ public class DDL_Table {
         }
     }
 
-    public boolean show_specific_row_(String tbl, String Column_to_search_for, String To_search_for) {
+    protected boolean show_specific_row_(String tbl, String Column_to_search_for, String To_search_for) {
         try {
             String sql = String.format("SELECT * FROM %s where %s = '%s'", tbl, Column_to_search_for, To_search_for);
             System.out.println(sql);
@@ -175,7 +175,7 @@ public class DDL_Table {
         return false;
     }
 
-    public boolean show_table(String tbl) {
+    protected boolean show_table(String tbl) {
         try {
             String sql = String.format("SELECT * FROM %s", tbl);
             results = stmnt.executeQuery(sql);

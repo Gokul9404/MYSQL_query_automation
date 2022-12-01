@@ -60,7 +60,7 @@ public class DDML_Database {
       }
    }
 
-   public boolean connect_databases(String dbs) {
+   protected boolean connect_databases(String dbs) {
       try {
          String sql = String.format("USE %s", dbs);
          stmnt.executeUpdate(sql);
@@ -95,7 +95,7 @@ public class DDML_Database {
       }
    }
 
-   public boolean delete_database(String dbs) {
+   protected boolean delete_database(String dbs) {
       try {
          String sql = String.format("DROP DATABASE %s", dbs);
          stmnt.executeUpdate(sql);
