@@ -48,35 +48,35 @@ public class DDL_Table {
         System.out.println("Total no. of Tables available in the database are ::" + i);
         if (a == 1) {
             int lst_size = tbl_list.size() - 1;
-            if( lst_size == -1){
+            if (lst_size == -1) {
                 System.out.println("No any table int the database!!");
-                return -1;
-            }
-            try {
-                n = ets.Get_userInput(0, lst_size);
-            } catch (Exception e) {
-                System.out.println(" Choose Table Func Error ");
+            } else {
+                try {
+                    n = ets.Get_userInput(0, lst_size);
+                } catch (Exception e) {
+                    System.out.println(" Choose Table Func Error ");
+                }
             }
         }
         return n;
     }
 
     protected int Choose_column(int a) {
-        if(a==3){
+        if (a == 3) {
             return tbl_property_nameList.size();
         }
         int n = -1, i = 0;
-        
+
         System.out.println("Columns in table:-");
         for (String clmn : tbl_property_nameList) {
             System.out.println(i++ + ") " + clmn);
         }
-        
-        n = i;  // Use for DML_Table's func
-        
-        if (a == 1){
+
+        n = i; // Use for DML_Table's func
+
+        if (a == 1) {
             try {
-                n = ets.Get_userInput(0, tbl_property_nameList.size()-1);
+                n = ets.Get_userInput(0, tbl_property_nameList.size() - 1);
             } catch (Exception e) {
                 System.out.println(" Choose Column Func Error ");
             }
