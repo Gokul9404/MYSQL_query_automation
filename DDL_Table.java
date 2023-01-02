@@ -1,13 +1,11 @@
 package MySQL_DBMS;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DDL_Table {
-    Connection con;
     Statement stmnt;
     ResultSet results, res;
     extras ets = new extras();
@@ -15,8 +13,7 @@ public class DDL_Table {
     ArrayList<String> tbl_property_nameList = new ArrayList<>();
     ArrayList<String> tbl_property_typeList = new ArrayList<>();
 
-    public DDL_Table(Connection con, Statement stmnt) {
-        this.con = con;
+    public DDL_Table(Statement stmnt) {
         this.stmnt = stmnt;
         update_tbl_list();
     };

@@ -1,6 +1,5 @@
 package MySQL_DBMS;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
@@ -8,13 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class DDML_Database {
-   Connection con;
    Statement stmnt;
    extras ets = new extras();
    ArrayList<String> db_list = new ArrayList<>();
 
-   public DDML_Database(Connection con, Statement stmnt) {
-      this.con = con;
+   public DDML_Database(Statement stmnt) {
       this.stmnt = stmnt;
       update_db_list();
    }

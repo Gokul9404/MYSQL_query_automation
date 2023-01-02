@@ -5,8 +5,8 @@ import java.sql.Statement;
 import java.sql.SQLException;
 
 public class DML_Table extends DDL_Table {
-    public DML_Table(Connection con, Statement stmnt) {
-        super(con, stmnt);
+    public DML_Table(Statement stmnt) {
+        super(stmnt);
     };
 
     protected boolean delete_specific_row(String tbbl,String column_para,String value, int type) {

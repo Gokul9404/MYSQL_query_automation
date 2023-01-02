@@ -17,11 +17,11 @@ public class use_case_example {
          Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/", "root", "gokul");
          Statement statement = conn.createStatement();
          
-         DDML_Database dbs = new DDML_Database(conn, statement);
+         DDML_Database dbs = new DDML_Database(statement);
          System.out.println(":: Select a database to have some work ::");
          dbs.choose_connect_databases();
          
-         DML_Table tabel = new DML_Table(conn, statement);
+         DML_Table tabel = new DML_Table(statement);
          while (Run == 1) {
             System.out.println(":: Select any operation to perform on database/table on database ::");
             System.out.println("1) Show table list");
